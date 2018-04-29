@@ -1,0 +1,6 @@
+Django==2.0.4
+pyaes==1.6.1
+pyasn1==0.4.2
+pytz==2018.4
+rsa==3.4.2
+Telethon==0.18.3
