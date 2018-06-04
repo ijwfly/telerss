@@ -14,8 +14,25 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, register_converter
+
+from rss.views import ChannelMessageFeed
+
+
+class SignedIntConverter(object):
+    regex = '-*[0-9]+'
+
+    def to_python(self, value):
+        return int(value)
+
+    def to_url(self, value):
+        return str(value)
+
+
+register_converter(SignedIntConverter, 'sint')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('channels/<sint:channel_id>/rss/', ChannelMessageFeed(), name='channel-item'),
+    path('channels/<sint:channel_id>/rss/<int:message_id>', ChannelMessageFeed(), name='message-item'),
 ]
